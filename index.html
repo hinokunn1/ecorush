@@ -909,6 +909,13 @@
       return { ...item, category };
     }
 
+    function getEmojiImageSrc(emoji) {
+      const codePoints = Array.from(emoji)
+        .map(char => char.codePointAt(0).toString(16))
+        .filter(code => code !== 'fe0f');
+      return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/${codePoints.join('-')}.png`;
+    }
+
     function createTrashCard(item) {
       const card = document.createElement('div');
       card.className = 'trash-card bg-white rounded-xl p-2 shadow-lg cursor-grab flex flex-col items-center pop-in';
@@ -924,9 +931,9 @@
       imgDiv.className = 'relative w-12 h-12 flex items-center justify-center text-3xl bg-gray-100 rounded-lg mb-1 overflow-hidden';
       
       const img = document.createElement('img');
-      img.src = item.imageSrc;
+      img.src = getEmojiImageSrc(item.emoji);
       img.alt = item.name;
-      img.className = 'w-full h-full object-cover';
+      img.className = 'w-10 h-10 object-contain';
       img.loading = 'lazy';
       img.onerror = function() {
         this.style.display = 'none';
